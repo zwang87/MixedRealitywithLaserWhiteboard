@@ -89,8 +89,11 @@
      <Compile Include="Assets\Scripts\PSMove\PSMoveController.cs" />
      <Compile Include="Assets\Scripts\PSMove\UniMoveController.cs" />
      <Compile Include="Assets\Scripts\SliderBarController.cs" />
+     <Compile Include="Assets\Scripts\TableCalibration.cs" />
      <Compile Include="Assets\Scripts\UDPReceiver.cs" />
      <Compile Include="Assets\Scripts\ViewPointController.cs" />
+     <Compile Include="Assets\Scripts\XSliderController.cs" />
+     <Compile Include="Assets\Scripts\YSliderController.cs" />
      <None Include="Assets\Materials\Skybox\Vertex color unlit 3.shader" />
      <None Include="Assets\Materials\Skybox\Vertex color unlit 1.shader" />
      <None Include="Assets\Materials\Skybox\Vertex color unlit 5.shader" />

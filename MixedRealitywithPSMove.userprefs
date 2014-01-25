@@ -1,9 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\SliderBarController.cs">
     <Files>
-      <File FileName="Assets\Scripts\SliderBarController.cs" Line="37" Column="10" />
-      <File FileName="Assets\Scripts\PSMove\PSMoveController.cs" Line="19" Column="1" />
+      <File FileName="Assets\Scripts\PSMove\PSMoveController.cs" Line="74" Column="16" />
+      <File FileName="Assets\Scripts\PSMove\PSMoveController.cs" Line="69" Column="4" />
+      <File FileName="Assets\Scripts\XSliderController.cs" Line="23" Column="19" />
+      <File FileName="Assets\Scripts\YSliderController.cs" Line="32" Column="2" />
+      <File FileName="Assets\Scripts\SliderBarController.cs" Line="25" Column="27" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

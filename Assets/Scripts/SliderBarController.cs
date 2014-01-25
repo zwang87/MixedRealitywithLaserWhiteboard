@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SliderBarController : MonoBehaviour {
 	public double minV = -0.5, maxV = 0.5, curV = 0;
-
+	public float xV = 0, yV = 0;
 	public enum SliderType{
 		XSlider = 0,
 		YSlider = 1,
@@ -11,33 +11,69 @@ public class SliderBarController : MonoBehaviour {
 	};
 
 	public SliderType sliderType;// = SliderType.XSlider;
-	GameObject psMove;
+	GameObject psMove, table;
+	Vector3 tablePos;
 	Vector3 localPos;
+
+	public Vector3 barPos;// = this.transform.localPosition;
+	Vector3 temp;// = tablePos;
 	// Use this for initialization
 	void Start () {
-		//this.transform.tag = "SliderBar";
 		psMove = GameObject.Find("PSMoveController");
+		table = GameObject.Find("Table");	
+		tablePos = table.transform.position;
 		localPos = Vector3.zero;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		localPos = this.transform.parent.transform.InverseTransformPoint(psMove.transform.position);
-		//Debug.Log(localPos.x + " " + localPos.y + " " + localPos.z);
-		clampBarPosition();
+		barPos = this.transform.localPosition;
 	}
 
+
+	bool test = false;
+	// Update is called once per frame
+	void Update () {
+		bool isTriggered = GameObject.Find("PSMoveController").GetComponent<PSMoveController>().sliderBarTriggered;
+
+		//if(!isTriggered)
+		//	test = false;
+		if(test && isTriggered){
+			localPos = this.transform.parent.transform.InverseTransformPoint(psMove.transform.position);
+
+		}
+		//Debug.Log(localPos.x + " " + localPos.y + " " + localPos.z);
+		clampBarPosition();
+		
+
+	}
+
+	void OnTriggerEnter (Collision other){
+
+		if(other.gameObject.transform.tag == "PSMove"){
+			//clampBarPosition();
+			test = true;
+		}
+
+	}
+
+	void OnTriggerExit (Collision other){
+		
+		if(other.gameObject.transform.tag == "PSMove"){
+			//clampBarPosition();
+			test = false;
+		}
+		
+	}
+
+
 	private void clampBarPosition(){
-		Vector3 barPos = this.transform.localPosition;
-		switch(sliderType){
-		case SliderType.XSlider:
+		//switch(sliderType){
+		//case SliderType.XSlider:
 			barPos.x = Mathf.Clamp (localPos.x, (float)-maxV, (float)maxV);
 			barPos.y = 0;
 			barPos.z = 0;
+			/*
 			break;
 		case SliderType.YSlider:
 			barPos.y = 0;
-			barPos.x = Mathf.Clamp (localPos.x, (float)-maxV, (float)maxV);
+			yV = barPos.x = Mathf.Clamp (localPos.x, (float)-maxV, (float)maxV);
 			barPos.z = 0;
 			break;
 		case SliderType.ZSlider:
@@ -46,7 +82,11 @@ public class SliderBarController : MonoBehaviour {
 			barPos.z = Mathf.Clamp (localPos.z, (float)-maxV, (float)maxV);
 			break;
 		}
-
-		this.transform.localPosition = barPos;
+		*/
+		//bool isTriggered = GameObject.Find("PSMoveController").GetComponent<PSMoveController>().sliderBarTriggered;
+		//Debug.Log(isTriggered);
+		//if(isTriggered)
+			this.transform.localPosition = barPos;
+		//table.transform.position = tablePos + new Vector3(xV, yV, 0);
 	}
 }
