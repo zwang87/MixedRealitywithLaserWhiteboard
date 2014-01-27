@@ -5,7 +5,7 @@
 	<Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
 	<ProductVersion>10.0.20506</ProductVersion>
 	<SchemaVersion>2.0</SchemaVersion>
-	<ProjectGuid>{B70A808F-1062-AB29-7687-DF7F1B202809}</ProjectGuid>
+	<ProjectGuid>{740AE140-4813-67BE-5D9A-7811B13BE47D}</ProjectGuid>
 	<OutputType>Library</OutputType>
 	<AppDesignerFolder>Properties</AppDesignerFolder>
 	<RootNamespace></RootNamespace>
@@ -88,12 +88,9 @@
      <Compile Include="Assets\Scripts\LazySusanController.cs" />
      <Compile Include="Assets\Scripts\PSMove\PSMoveController.cs" />
      <Compile Include="Assets\Scripts\PSMove\UniMoveController.cs" />
-     <Compile Include="Assets\Scripts\SliderBarController.cs" />
      <Compile Include="Assets\Scripts\TableCalibration.cs" />
      <Compile Include="Assets\Scripts\UDPReceiver.cs" />
      <Compile Include="Assets\Scripts\ViewPointController.cs" />
-     <Compile Include="Assets\Scripts\XSliderController.cs" />
-     <Compile Include="Assets\Scripts\YSliderController.cs" />
      <None Include="Assets\Materials\Skybox\Vertex color unlit 3.shader" />
      <None Include="Assets\Materials\Skybox\Vertex color unlit 1.shader" />
      <None Include="Assets\Materials\Skybox\Vertex color unlit 5.shader" />

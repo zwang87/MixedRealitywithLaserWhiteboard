@@ -17,8 +17,16 @@ public class PSMoveController : MonoBehaviour
 		private bool childrenAttached = false;
 		public bool sliderBarTriggered = false;
 
+
+	Vector3 tablePos;
 		void Start ()
 		{
+
+		xSlider = GameObject.Find("XSliderBar");
+		table = GameObject.Find("Table");
+		tablePos = table.transform.localPosition;
+
+
 				this.transform.parent = GameObject.Find ("RightHandMiddle4").transform;
 				this.transform.localPosition = Vector3.zero;
 				Time.maximumDeltaTime = 0.1f;
@@ -64,7 +72,14 @@ public class PSMoveController : MonoBehaviour
 				}
 		
 		}
-	
+
+
+	//bool test = false;
+	GameObject xSlider;
+	Vector3 localPos;
+
+	Vector3 barPos;
+	GameObject table ;
 		void Update ()
 		{
 				if (moves.Count > 0) {
@@ -75,6 +90,8 @@ public class PSMoveController : MonoBehaviour
 								c.g = 0.5f;
 								handPoint.renderer.material.color = c;
 								handPoint.collider.isTrigger = true;
+								
+
 			
 						} else {
 								moves [0].SetRumble (0.0f);
@@ -84,39 +101,61 @@ public class PSMoveController : MonoBehaviour
 								isGripped = false;
 								sliderBarTriggered = false;
 								childrenAttached = false;
+
+								sliderBarTriggered = false;
 						}
+
+
+
+					
 				}
+		if(sliderBarTriggered){
+			localPos = xSlider.transform.parent.transform.InverseTransformPoint(this.transform.position);
+			//xSlider.transform.localPosition = new Vector3(Mathf.Clamp(localPos.x, -0.5f, 0.5f), 0, 0);
+
+			//table.transform.localPosition = new Vector3(xSlider.transform.localPosition.x, 0, 0.7f);
+			table.transform.localPosition = xSlider.transform.localPosition;
 			
 		}
+		clampBarPosition();
+		
+		
+		
+	}
+
+	private void clampBarPosition(){
+		
+		barPos.x = Mathf.Clamp (localPos.x, -0.5f, 0.5f);
+		barPos.y = 0;
+		barPos.z = 0;
+		
+		xSlider.transform.localPosition = barPos;
+		//table.transform.position = tablePos + barPos;
+	}
 	
 		void OnCollisionStay (Collision other)
 		{
 				if (count > 0) {
-						if (other.gameObject.transform.tag == "cube" && moves [0].Trigger > 0.0f) {//moves[0].Trigger > 0.0f){
+					if(moves[0].Trigger > 0.0f)
+						if (other.gameObject.transform.tag == "cube") {//moves[0].Trigger > 0.0f){
 								isGripped = true;
 								audioSource.Play ();
 								moves [0].SetRumble (moves [0].Trigger);
 						}
-		
 						
-
-						if(other.gameObject.transform.tag == "sliderBar" && moves[0].Trigger > 0.0f){
+						if(other.gameObject.transform.tag == "sliderBar"){
+								//test = true;
 								sliderBarTriggered = true;
 								moves[0].SetRumble (moves[0].Trigger);
 						}
-
-			if (isGripped && !childrenAttached) {
-				other.gameObject.transform.parent = this.gameObject.transform;
-				childrenAttached = true;
-			}
-						
-						/*
-						if (sliderBarTriggered && !childrenAttached) {
-								other.gameObject.transform.parent = this.gameObject.transform;
-								childrenAttached = true;
-						}
-						*/
 				}
+
+					if (isGripped && !childrenAttached) {
+						other.gameObject.transform.parent = this.gameObject.transform;
+						childrenAttached = true;
+					}
+						
+				
 
 		}
 	
