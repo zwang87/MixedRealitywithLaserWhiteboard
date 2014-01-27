@@ -24,7 +24,7 @@ public class TableCalibration : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		isTriggered = psMove.GetComponent<PSMoveController>().sliderBarTriggered;
+		isTriggered = psMove.GetComponent<PSMoveController>().xSliderBarTriggered;
 		if(isTriggered){
 			Debug.Log(xSlider.transform.localPosition.x + "  " + ySlider.transform.localPosition.x + "  " + isTriggered);
 			this.transform.position = new Vector3(temp.x+xSlider.transform.localPosition.x, temp.y+ySlider.transform.localPosition.x, temp.z+zSlider.transform.localPosition.x);

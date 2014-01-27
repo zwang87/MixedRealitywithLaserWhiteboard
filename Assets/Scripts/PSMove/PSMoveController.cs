@@ -15,17 +15,31 @@ public class PSMoveController : MonoBehaviour
 		public AudioClip audioClip;
 		public Vector3 psmoveVec = new Vector3 (0, 1.5f, 1.5f);
 		private bool childrenAttached = false;
-		public bool sliderBarTriggered = false;
 
+		//control x,y,z sliders
+		public bool xSliderBarTriggered = false;
+		public bool ySliderBarTriggered = false;
+		public bool zSliderBarTriggered = false;
+		GameObject xSliderBar;
+		GameObject ySliderBar;
+		GameObject zSliderBar;
+		Vector3 xSliderLocalPos;
+		Vector3 ySliderLocalPos;
+		Vector3 zSliderLocalPos;
+		Vector3 xBarPos;
+		Vector3 yBarPos;
+		Vector3 zBarPos;
+		GameObject table ;
+		Vector3 tablePos;
 
-	Vector3 tablePos;
 		void Start ()
 		{
 
-		xSlider = GameObject.Find("XSliderBar");
-		table = GameObject.Find("Table");
-		tablePos = table.transform.localPosition;
-
+				xSliderBar = GameObject.Find ("XSliderBar");
+				ySliderBar = GameObject.Find ("YSliderBar");
+				zSliderBar = GameObject.Find ("ZSliderBar");
+				table = GameObject.Find ("Table");
+				tablePos = table.transform.localPosition;
 
 				this.transform.parent = GameObject.Find ("RightHandMiddle4").transform;
 				this.transform.localPosition = Vector3.zero;
@@ -68,95 +82,84 @@ public class PSMoveController : MonoBehaviour
 						}
 		
 						orig = handPoint.renderer.material.color;
-						//moves[0].SetLED(Color.red);
 				}
-		
 		}
-
-
-	//bool test = false;
-	GameObject xSlider;
-	Vector3 localPos;
-
-	Vector3 barPos;
-	GameObject table ;
+	
 		void Update ()
 		{
 				if (moves.Count > 0) {
-
 						if (moves [0].Trigger > 0.0f) {
 								Color c = handPoint.renderer.material.color;
 								c.b = 0.5f;
 								c.g = 0.5f;
 								handPoint.renderer.material.color = c;
 								handPoint.collider.isTrigger = true;
-								
-
-			
 						} else {
 								moves [0].SetRumble (0.0f);
 								handPoint.renderer.material.color = orig;
 								handPoint.collider.isTrigger = false;
 								this.gameObject.transform.DetachChildren ();
 								isGripped = false;
-								sliderBarTriggered = false;
 								childrenAttached = false;
-
-								sliderBarTriggered = false;
+								xSliderBarTriggered = false;
+								ySliderBarTriggered = false;
+								zSliderBarTriggered = false;
 						}
-
-
-
-					
 				}
-		if(sliderBarTriggered){
-			localPos = xSlider.transform.parent.transform.InverseTransformPoint(this.transform.position);
-			//xSlider.transform.localPosition = new Vector3(Mathf.Clamp(localPos.x, -0.5f, 0.5f), 0, 0);
-
-			//table.transform.localPosition = new Vector3(xSlider.transform.localPosition.x, 0, 0.7f);
-			table.transform.localPosition = xSlider.transform.localPosition;
-			
+				if (xSliderBarTriggered) {
+						xSliderLocalPos = xSliderBar.transform.parent.transform.InverseTransformPoint (this.transform.position);
+						xSliderBar.transform.localPosition = new Vector3(Mathf.Clamp(xSliderLocalPos.x, -0.5f, 0.5f), 0, 0);//new Vector3(xSliderBar.transform.localPosition.x, 0, 0);
+						table.transform.localPosition = xSliderBar.transform.localPosition;
+				}
+				else if(ySliderBarTriggered){
+						ySliderLocalPos = ySliderBar.transform.parent.transform.InverseTransformPoint(this.transform.position);
+						ySliderBar.transform.localPosition = new Vector3(Mathf.Clamp(ySliderLocalPos.x, -0.5f, 0.5f), 0, 0);
+						table.transform.localPosition = new Vector3(0, ySliderBar.transform.localPosition.x, 0);
+				}
+				else if(zSliderBarTriggered){
+						zSliderLocalPos = zSliderBar.transform.parent.transform.InverseTransformPoint(this.transform.position);
+						zSliderBar.transform.localPosition = new Vector3(Mathf.Clamp(zSliderLocalPos.x, -0.5f, 0.5f), 0, 0);
+						table.transform.localPosition = new Vector3(0, 0, zSliderBar.transform.localPosition.x);
+				}
+				clampBarPosition();
 		}
-		clampBarPosition();
-		
-		
-		
-	}
 
-	private void clampBarPosition(){
-		
-		barPos.x = Mathf.Clamp (localPos.x, -0.5f, 0.5f);
-		barPos.y = 0;
-		barPos.z = 0;
-		
-		xSlider.transform.localPosition = barPos;
-		//table.transform.position = tablePos + barPos;
-	}
+		private void clampBarPosition ()
+		{
+				xBarPos.x = Mathf.Clamp (xSliderLocalPos.x, -0.5f, 0.5f);
+				xBarPos.y = 0;
+				xBarPos.z = 0;
+
+				yBarPos.x = Mathf.Clamp (ySliderLocalPos.x, -0.5f, 0.5f);
+				yBarPos.y = 0;
+				yBarPos.z = 0;
+
+				zBarPos.x = Mathf.Clamp (zSliderLocalPos.x, -0.5f, 0.5f);
+				zBarPos.y = 0;
+				zBarPos.z = 0;
+		}
 	
 		void OnCollisionStay (Collision other)
 		{
 				if (count > 0) {
-					if(moves[0].Trigger > 0.0f)
-						if (other.gameObject.transform.tag == "cube") {//moves[0].Trigger > 0.0f){
-								isGripped = true;
-								audioSource.Play ();
+						if (moves [0].Trigger > 0.0f) {
+								if (other.gameObject.transform.tag == "cube") {
+										isGripped = true;
+										audioSource.Play ();
+								} else if (other.gameObject.transform.tag == "xSliderBar") {
+										xSliderBarTriggered = true;
+								} else if (other.gameObject.transform.tag == "ySliderBar") {
+										ySliderBarTriggered = true;
+								} else if (other.gameObject.transform.tag == "zSliderBar") {
+										zSliderBarTriggered = true;
+								}
 								moves [0].SetRumble (moves [0].Trigger);
 						}
-						
-						if(other.gameObject.transform.tag == "sliderBar"){
-								//test = true;
-								sliderBarTriggered = true;
-								moves[0].SetRumble (moves[0].Trigger);
+						if (isGripped && !childrenAttached) {
+								other.gameObject.transform.parent = this.gameObject.transform;
+								childrenAttached = true;
 						}
 				}
-
-					if (isGripped && !childrenAttached) {
-						other.gameObject.transform.parent = this.gameObject.transform;
-						childrenAttached = true;
-					}
-						
-				
-
 		}
 	
 		void HandleControllerDisconnected (object sender, EventArgs e)
